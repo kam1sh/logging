@@ -1,0 +1,871 @@
+{
+    "id64": 688319,
+    "name": "Cygni X-3",
+    "coords": {
+        "x": -36417.71875,
+        "y": 452.0625,
+        "z": 6522.71875
+    },
+    "bodyCount": 17,
+    "date": "2023-03-12 14:48:50+00",
+    "bodies": [
+        {
+            "id64": 36028797019652287,
+            "bodyId": 1,
+            "name": "Straluia UO-Z d13-0 A",
+            "type": "Barycentre",
+            "parents": [
+                {
+                    "Null": 0
+                }
+            ],
+            "orbitalPeriod": 17.4534106971991,
+            "semiMajorAxis": 0.0847140800437292,
+            "orbitalEccentricity": 0.227591,
+            "orbitalInclination": -32.030019,
+            "argOfPeriapsis": 4.398427,
+            "meanAnomaly": 205.09534,
+            "ascendingNode": -35.154369,
+            "timestamps": {
+                "distanceToArrival": "2021-09-11T19:57:27",
+                "meanAnomaly": "2023-03-12T14:48:50"
+            },
+            "stations": [],
+            "updateTime": "2023-03-12 14:48:50+00"
+        },
+        {
+            "id64": 72057594038616255,
+            "bodyId": 2,
+            "name": "Cygni X-3 A",
+            "type": "Star",
+            "subType": "Black Hole",
+            "distanceToArrival": 0.0,
+            "mainStar": true,
+            "age": 2,
+            "spectralClass": null,
+            "luminosity": "VII",
+            "absoluteMagnitude": 20.0,
+            "solarMasses": 55.601563,
+            "solarRadius": 0.00023584716480949,
+            "surfaceTemperature": 0.0,
+            "rotationalPeriod": 0.00000106524305555556,
+            "rotationalPeriodTidallyLocked": false,
+            "axialTilt": 0.0,
+            "parents": [
+                {
+                    "Null": 1
+                },
+                {
+                    "Null": 0
+                }
+            ],
+            "orbitalPeriod": 1.71200634428241,
+            "semiMajorAxis": 0.0241872680455514,
+            "orbitalEccentricity": 0.182488,
+            "orbitalInclination": -35.837665,
+            "argOfPeriapsis": 240.602624,
+            "meanAnomaly": 188.851422,
+            "ascendingNode": -120.657385,
+            "timestamps": {
+                "distanceToArrival": "2022-08-12T17:33:43",
+                "meanAnomaly": "2022-08-12T17:33:43"
+            },
+            "stations": [],
+            "updateTime": "2022-08-12 17:33:43+00"
+        },
+        {
+            "id64": 108086391057580223,
+            "bodyId": 3,
+            "name": "Cygni X-3 B",
+            "type": "Star",
+            "subType": "Black Hole",
+            "distanceToArrival": 61.383392,
+            "mainStar": false,
+            "age": 2,
+            "spectralClass": null,
+            "luminosity": "VII",
+            "absoluteMagnitude": 20.0,
+            "solarMasses": 14.710938,
+            "solarRadius": 0.0000623967974924515,
+            "surfaceTemperature": 0.0,
+            "rotationalPeriod": 8.8712962962963e-7,
+            "rotationalPeriodTidallyLocked": false,
+            "axialTilt": 0.0,
+            "parents": [
+                {
+                    "Null": 1
+                },
+                {
+                    "Null": 0
+                }
+            ],
+            "orbitalPeriod": 1.71200634428241,
+            "semiMajorAxis": 0.091418375228254,
+            "orbitalEccentricity": 0.182488,
+            "orbitalInclination": -35.837665,
+            "argOfPeriapsis": 60.602629,
+            "meanAnomaly": 100.761287,
+            "ascendingNode": -120.657385,
+            "timestamps": {
+                "distanceToArrival": "2023-03-29T17:19:13",
+                "meanAnomaly": "2023-03-29T17:19:13"
+            },
+            "stations": [],
+            "updateTime": "2023-03-29 17:19:13+00"
+        },
+        {
+            "id64": 144115188076544191,
+            "bodyId": 4,
+            "name": "Cygni X-3 C",
+            "type": "Star",
+            "subType": "B (Blue-White) Star",
+            "distanceToArrival": 338.550138,
+            "mainStar": false,
+            "age": 2,
+            "spectralClass": "B0",
+            "luminosity": "Vz",
+            "absoluteMagnitude": -5.899521,
+            "solarMasses": 12.191406,
+            "solarRadius": 5.24795509417685,
+            "surfaceTemperature": 29818.0,
+            "rotationalPeriod": 1.78072221322917,
+            "rotationalPeriodTidallyLocked": false,
+            "axialTilt": 0.0,
+            "parents": [
+                {
+                    "Null": 0
+                }
+            ],
+            "orbitalPeriod": 17.4534106971991,
+            "semiMajorAxis": 0.488578406183926,
+            "orbitalEccentricity": 0.227591,
+            "orbitalInclination": -32.030019,
+            "argOfPeriapsis": 184.398415,
+            "meanAnomaly": 197.897205,
+            "ascendingNode": -35.154369,
+            "timestamps": {
+                "distanceToArrival": "2023-03-29T17:19:13",
+                "meanAnomaly": "2023-03-29T17:19:13"
+            },
+            "stations": [],
+            "updateTime": "2023-03-29 17:19:13+00"
+        },
+        {
+            "id64": 180143985095508159,
+            "bodyId": 5,
+            "name": "Cygni X-3 ABC 1",
+            "type": "Planet",
+            "subType": "Metal-rich body",
+            "distanceToArrival": 606.888079,
+            "isLandable": false,
+            "gravity": 3.72912909146528,
+            "earthMasses": 10.74974,
+            "radius": 10823.852,
+            "surfaceTemperature": 8541.938477,
+            "surfacePressure": 8557925.34138663,
+            "volcanismType": "Major Silicate Vapour Geysers",
+            "atmosphereType": "Hot thick Metallic vapour",
+            "atmosphereComposition": {
+                "Iron": 82.643143,
+                "Silicates": 17.356808
+            },
+            "solidComposition": {
+                "Ice": 0.0318,
+                "Metal": 90.7301,
+                "Rock": 4.9355
+            },
+            "terraformingState": "Not terraformable",
+            "rotationalPeriod": 1.37073269980324,
+            "rotationalPeriodTidallyLocked": false,
+            "axialTilt": 0.329998,
+            "parents": [
+                {
+                    "Null": 0
+                }
+            ],
+            "orbitalPeriod": 56.1565595368519,
+            "semiMajorAxis": 1.26572392218517,
+            "orbitalEccentricity": 0.000126,
+            "orbitalInclination": -0.011243,
+            "argOfPeriapsis": 147.078896,
+            "meanAnomaly": 224.379503,
+            "ascendingNode": -175.186928,
+            "timestamps": {
+                "distanceToArrival": "2023-03-12T14:49:28",
+                "meanAnomaly": "2023-03-12T14:49:28"
+            },
+            "stations": [],
+            "updateTime": "2023-03-12 14:49:28+00"
+        },
+        {
+            "id64": 216172782114472127,
+            "bodyId": 6,
+            "name": "Cygni X-3 ABC 2",
+            "type": "Planet",
+            "subType": "Metal-rich body",
+            "distanceToArrival": 732.948838,
+            "isLandable": false,
+            "gravity": 4.09326470888141,
+            "earthMasses": 7.343187,
+            "radius": 8538.744,
+            "surfaceTemperature": 8826.777344,
+            "surfacePressure": 11182285.5983814,
+            "volcanismType": "Major Silicate Vapour Geysers",
+            "atmosphereType": "Hot thick Metallic vapour",
+            "atmosphereComposition": {
+                "Iron": 81.971283,
+                "Silicates": 18.02828
+            },
+            "solidComposition": {
+                "Ice": 0.0,
+                "Metal": 94.0088,
+                "Rock": 5.9912
+            },
+            "terraformingState": "Not terraformable",
+            "rotationalPeriod": 1.49547055068287,
+            "rotationalPeriodTidallyLocked": false,
+            "axialTilt": -0.053588,
+            "parents": [
+                {
+                    "Null": 0
+                }
+            ],
+            "orbitalPeriod": 72.1236752967014,
+            "semiMajorAxis": 1.49551425441601,
+            "orbitalEccentricity": 0.001783,
+            "orbitalInclination": 0.207809,
+            "argOfPeriapsis": 230.058403,
+            "meanAnomaly": 266.409591,
+            "ascendingNode": 125.50056,
+            "timestamps": {
+                "distanceToArrival": "2023-03-12T14:49:25",
+                "meanAnomaly": "2023-03-12T14:49:25"
+            },
+            "stations": [],
+            "updateTime": "2023-03-12 14:49:25+00"
+        },
+        {
+            "id64": 252201579133436095,
+            "bodyId": 7,
+            "name": "Cygni X-3 barycentre 7",
+            "type": "Barycentre",
+            "orbitalPeriod": 134.368606463623,
+            "semiMajorAxis": 2.2643168620547,
+            "orbitalEccentricity": 0.0,
+            "orbitalInclination": -0.010783,
+            "argOfPeriapsis": 111.797947,
+            "meanAnomaly": 179.86326,
+            "ascendingNode": 130.859031,
+            "timestamps": {
+                "meanAnomaly": "2023-03-12T14:48:50"
+            },
+            "stations": [],
+            "updateTime": "2023-03-12 14:48:50+00"
+        },
+        {
+            "id64": 288230376152400063,
+            "bodyId": 8,
+            "name": "Cygni X-3 ABC 3",
+            "type": "Star",
+            "subType": "T Tauri Star",
+            "distanceToArrival": 1164.585211,
+            "mainStar": false,
+            "age": 2,
+            "spectralClass": "TTS2",
+            "luminosity": "Va",
+            "absoluteMagnitude": 8.465302,
+            "solarMasses": 0.394531,
+            "solarRadius": 0.608428905823149,
+            "surfaceTemperature": 3208.0,
+            "rotationalPeriod": 1.15126565265046,
+            "rotationalPeriodTidallyLocked": false,
+            "axialTilt": 2.762595,
+            "parents": [
+                {
+                    "Null": 7
+                },
+                {
+                    "Null": 0
+                }
+            ],
+            "orbitalPeriod": 22.4102743797801,
+            "semiMajorAxis": 0.0000292245242879717,
+            "orbitalEccentricity": 0.118557,
+            "orbitalInclination": -4.570221,
+            "argOfPeriapsis": 164.97824,
+            "meanAnomaly": 337.789309,
+            "ascendingNode": -105.466051,
+            "timestamps": {
+                "distanceToArrival": "2023-03-29T17:19:13",
+                "meanAnomaly": "2023-03-29T17:19:13"
+            },
+            "stations": [],
+            "updateTime": "2023-03-29 17:19:13+00"
+        },
+        {
+            "id64": 324259173171364031,
+            "bodyId": 9,
+            "name": "Cygni X-3 ABC 4",
+            "type": "Planet",
+            "subType": "High metal content world",
+            "distanceToArrival": 1187.872979,
+            "isLandable": false,
+            "gravity": 6.09924003262975,
+            "earthMasses": 33.943546,
+            "radius": 15039.291,
+            "surfaceTemperature": 12739.893555,
+            "surfacePressure": 27723456.8697557,
+            "volcanismType": "Major Silicate Vapour Geysers",
+            "atmosphereType": "Hot thick Silicate vapour",
+            "atmosphereComposition": {
+                "Iron": 1.475897,
+                "Silicates": 98.505783
+            },
+            "solidComposition": {
+                "Ice": 0.0,
+                "Metal": 33.2595,
+                "Rock": 66.7405
+            },
+            "terraformingState": "Not terraformable",
+            "signals": {
+                "signals": {
+                    "$SAA_SignalType_Human;": 1
+                },
+                "updateTime": "2020-06-12 10:55:00+00"
+            },
+            "rotationalPeriod": 22.413136325162,
+            "rotationalPeriodTidallyLocked": true,
+            "axialTilt": 0.003323,
+            "parents": [
+                {
+                    "Null": 7
+                },
+                {
+                    "Null": 0
+                }
+            ],
+            "orbitalPeriod": 22.4102743797801,
+            "semiMajorAxis": 0.114563538841893,
+            "orbitalEccentricity": 0.118557,
+            "orbitalInclination": -4.570221,
+            "argOfPeriapsis": 344.978235,
+            "meanAnomaly": 63.031284,
+            "ascendingNode": -105.466051,
+            "timestamps": {
+                "distanceToArrival": "2023-03-12T14:49:36",
+                "meanAnomaly": "2023-03-12T14:49:36"
+            },
+            "stations": [],
+            "updateTime": "2023-03-12 14:49:36+00"
+        },
+        {
+            "id64": 360287970190327999,
+            "bodyId": 10,
+            "name": "Cygni X-3 barycentre 10",
+            "type": "Barycentre",
+            "orbitalPeriod": 205.312027699421,
+            "semiMajorAxis": 3.0038730543318,
+            "orbitalEccentricity": 0.000629,
+            "orbitalInclination": -0.006422,
+            "argOfPeriapsis": 342.919804,
+            "meanAnomaly": 109.562717,
+            "ascendingNode": -35.247212,
+            "timestamps": {
+                "meanAnomaly": "2023-03-12T14:48:50"
+            },
+            "stations": [],
+            "updateTime": "2023-03-12 14:48:50+00"
+        },
+        {
+            "id64": 396316767209291967,
+            "bodyId": 11,
+            "name": "Cygni X-3 ABC 5",
+            "type": "Star",
+            "subType": "T Tauri Star",
+            "distanceToArrival": 1458.715499,
+            "mainStar": false,
+            "age": 2,
+            "spectralClass": "TTS3",
+            "luminosity": "VI",
+            "absoluteMagnitude": 11.906876,
+            "solarMasses": 0.207031,
+            "solarRadius": 0.406585696621136,
+            "surfaceTemperature": 1777.0,
+            "rotationalPeriod": 1.51535204616898,
+            "rotationalPeriodTidallyLocked": false,
+            "axialTilt": -0.473234,
+            "parents": [
+                {
+                    "Null": 10
+                },
+                {
+                    "Null": 0
+                }
+            ],
+            "orbitalPeriod": 27.1241387559259,
+            "semiMajorAxis": 0.0000655045456213903,
+            "orbitalEccentricity": 0.106151,
+            "orbitalInclination": 1.924534,
+            "argOfPeriapsis": 296.387368,
+            "meanAnomaly": 312.294434,
+            "ascendingNode": -163.210946,
+            "timestamps": {
+                "distanceToArrival": "2023-03-29T17:19:13",
+                "meanAnomaly": "2023-03-29T17:19:13"
+            },
+            "stations": [],
+            "updateTime": "2023-03-29 17:19:13+00"
+        },
+        {
+            "id64": 432345564228255935,
+            "bodyId": 12,
+            "name": "Cygni X-3 ABC 6",
+            "type": "Planet",
+            "subType": "High metal content world",
+            "distanceToArrival": 1510.967655,
+            "isLandable": false,
+            "gravity": 7.17609635974304,
+            "earthMasses": 43.934292,
+            "radius": 15774.089,
+            "surfaceTemperature": 10787.126953,
+            "surfacePressure": 38377343.4706933,
+            "volcanismType": "Major Silicate Vapour Geysers",
+            "atmosphereType": "Hot thick Silicate vapour",
+            "atmosphereComposition": {
+                "Iron": 1.475888,
+                "Silicates": 98.505196
+            },
+            "solidComposition": {
+                "Ice": 0.0,
+                "Metal": 33.2595,
+                "Rock": 66.7405
+            },
+            "terraformingState": "Not terraformable",
+            "rotationalPeriod": 27.1325661972338,
+            "rotationalPeriodTidallyLocked": true,
+            "axialTilt": -0.332391,
+            "parents": [
+                {
+                    "Null": 10
+                },
+                {
+                    "Null": 0
+                }
+            ],
+            "orbitalPeriod": 27.1241387559259,
+            "semiMajorAxis": 0.105331233647471,
+            "orbitalEccentricity": 0.106151,
+            "orbitalInclination": 1.924534,
+            "argOfPeriapsis": 116.387373,
+            "meanAnomaly": 85.281821,
+            "ascendingNode": -163.210946,
+            "timestamps": {
+                "distanceToArrival": "2023-03-12T14:49:08",
+                "meanAnomaly": "2023-03-12T14:49:08"
+            },
+            "stations": [],
+            "updateTime": "2023-03-12 14:49:08+00"
+        },
+        {
+            "id64": 468374361247219903,
+            "bodyId": 13,
+            "name": "Cygni X-3 barycentre 13",
+            "type": "Barycentre",
+            "orbitalPeriod": 292.838647685671,
+            "semiMajorAxis": 3.80619442855251,
+            "orbitalEccentricity": 0.000414,
+            "orbitalInclination": -0.963309,
+            "argOfPeriapsis": 236.646599,
+            "meanAnomaly": 102.298357,
+            "ascendingNode": -82.471645,
+            "timestamps": {
+                "meanAnomaly": "2023-03-12T14:48:50"
+            },
+            "stations": [],
+            "updateTime": "2023-03-12 14:48:50+00"
+        },
+        {
+            "id64": 504403158266183871,
+            "bodyId": 14,
+            "name": "Cygni X-3 ABC 7",
+            "type": "Star",
+            "subType": "T Tauri Star",
+            "distanceToArrival": 1927.958639,
+            "mainStar": false,
+            "age": 2,
+            "spectralClass": "TTS5",
+            "luminosity": "Va",
+            "absoluteMagnitude": 6.60257,
+            "solarMasses": 0.585938,
+            "solarRadius": 0.756622309130122,
+            "surfaceTemperature": 4417.0,
+            "rotationalPeriod": 1.33535402222222,
+            "rotationalPeriodTidallyLocked": false,
+            "axialTilt": -0.55977,
+            "parents": [
+                {
+                    "Null": 13
+                },
+                {
+                    "Null": 0
+                }
+            ],
+            "orbitalPeriod": 30.2615665175347,
+            "semiMajorAxis": 0.0000224936652141801,
+            "orbitalEccentricity": 0.133839,
+            "orbitalInclination": 5.366809,
+            "argOfPeriapsis": 69.28201,
+            "meanAnomaly": 344.087556,
+            "ascendingNode": 143.261579,
+            "timestamps": {
+                "distanceToArrival": "2023-03-29T17:19:13",
+                "meanAnomaly": "2023-03-29T17:19:13"
+            },
+            "stations": [],
+            "updateTime": "2023-03-29 17:19:13+00"
+        },
+        {
+            "id64": 540431955285147839,
+            "bodyId": 15,
+            "name": "Cygni X-3 ABC 8",
+            "type": "Planet",
+            "subType": "High metal content world",
+            "distanceToArrival": 1997.648097,
+            "isLandable": false,
+            "gravity": 5.41248618333843,
+            "earthMasses": 27.85873,
+            "radius": 14463.348,
+            "surfaceTemperature": 10453.069336,
+            "surfacePressure": 21831794.7243819,
+            "volcanismType": "Major Silicate Vapour Geysers",
+            "atmosphereType": "Hot thick Silicate vapour",
+            "atmosphereComposition": {
+                "Iron": 1.475897,
+                "Silicates": 98.505783
+            },
+            "solidComposition": {
+                "Ice": 0.0,
+                "Metal": 33.2595,
+                "Rock": 66.7405
+            },
+            "terraformingState": "Not terraformable",
+            "rotationalPeriod": 1.91149242326389,
+            "rotationalPeriodTidallyLocked": false,
+            "axialTilt": -0.056525,
+            "parents": [
+                {
+                    "Null": 13
+                },
+                {
+                    "Null": 0
+                }
+            ],
+            "orbitalPeriod": 30.2615665175347,
+            "semiMajorAxis": 0.159766551906623,
+            "orbitalEccentricity": 0.133839,
+            "orbitalInclination": 5.366809,
+            "argOfPeriapsis": 249.282005,
+            "meanAnomaly": 140.615464,
+            "ascendingNode": 143.261579,
+            "timestamps": {
+                "distanceToArrival": "2023-03-12T14:49:41",
+                "meanAnomaly": "2023-03-12T14:49:41"
+            },
+            "stations": [],
+            "updateTime": "2023-03-12 14:49:41+00"
+        },
+        {
+            "id64": 576460752304111807,
+            "bodyId": 16,
+            "name": "Cygni X-3 barycentre 16",
+            "type": "Barycentre",
+            "orbitalPeriod": 460.082692680532,
+            "semiMajorAxis": 5.14394035342379,
+            "orbitalEccentricity": 0.001422,
+            "orbitalInclination": -0.002917,
+            "argOfPeriapsis": 309.094456,
+            "meanAnomaly": 2.875125,
+            "ascendingNode": -167.493918,
+            "timestamps": {
+                "meanAnomaly": "2023-03-12T14:48:50"
+            },
+            "stations": [],
+            "updateTime": "2023-03-12 14:48:50+00"
+        },
+        {
+            "id64": 612489549323075775,
+            "bodyId": 17,
+            "name": "Cygni X-3 ABC 9",
+            "type": "Star",
+            "subType": "T Tauri Star",
+            "distanceToArrival": 2531.351405,
+            "mainStar": false,
+            "age": 2,
+            "spectralClass": "TTS7",
+            "luminosity": "IVb",
+            "absoluteMagnitude": 9.684189,
+            "solarMasses": 0.378906,
+            "solarRadius": 0.580840994967649,
+            "surfaceTemperature": 2480.0,
+            "rotationalPeriod": 1.68414935179398,
+            "rotationalPeriodTidallyLocked": false,
+            "axialTilt": -2.48294,
+            "parents": [
+                {
+                    "Null": 16
+                },
+                {
+                    "Null": 0
+                }
+            ],
+            "orbitalPeriod": 76.0931632033102,
+            "semiMajorAxis": 0.00000175561740643813,
+            "orbitalEccentricity": 0.040871,
+            "orbitalInclination": 3.311856,
+            "argOfPeriapsis": 197.437615,
+            "meanAnomaly": 188.189346,
+            "ascendingNode": -109.84637,
+            "timestamps": {
+                "distanceToArrival": "2023-03-29T17:19:13",
+                "meanAnomaly": "2023-03-29T17:19:13"
+            },
+            "stations": [],
+            "updateTime": "2023-03-29 17:19:13+00"
+        },
+        {
+            "id64": 648518346342039743,
+            "bodyId": 18,
+            "name": "Cygni X-3 ABC 10",
+            "type": "Planet",
+            "subType": "Metal-rich body",
+            "distanceToArrival": 2518.854354,
+            "isLandable": false,
+            "gravity": 1.63949250535332,
+            "earthMasses": 0.878142,
+            "radius": 4665.672,
+            "surfaceTemperature": 1467.841309,
+            "surfacePressure": 0.00255108701702443,
+            "volcanismType": "Major Metallic Magma",
+            "atmosphereType": "Hot thin Silicate vapour",
+            "atmosphereComposition": {
+                "Silicates": 100.0
+            },
+            "solidComposition": {
+                "Ice": 0.0,
+                "Metal": 100.0,
+                "Rock": 0.0
+            },
+            "terraformingState": "Not terraformable",
+            "rotationalPeriod": 1.19199450172454,
+            "rotationalPeriodTidallyLocked": false,
+            "axialTilt": 0.082169,
+            "parents": [
+                {
+                    "Null": 16
+                },
+                {
+                    "Null": 0
+                }
+            ],
+            "orbitalPeriod": 76.0931632033102,
+            "semiMajorAxis": 0.255337744638736,
+            "orbitalEccentricity": 0.040871,
+            "orbitalInclination": 3.311856,
+            "argOfPeriapsis": 17.43762,
+            "meanAnomaly": 188.189925,
+            "ascendingNode": -109.84637,
+            "timestamps": {
+                "distanceToArrival": "2023-03-29T17:19:24",
+                "meanAnomaly": "2023-03-29T17:19:24"
+            },
+            "stations": [],
+            "updateTime": "2023-03-29 17:19:24+00"
+        },
+        {
+            "id64": 684547143361003711,
+            "bodyId": 19,
+            "name": "Cygni X-3 ABC 11",
+            "type": "Star",
+            "subType": "T Tauri Star",
+            "distanceToArrival": 3230.274701,
+            "mainStar": false,
+            "age": 2,
+            "spectralClass": "TTS1",
+            "luminosity": "Vab",
+            "absoluteMagnitude": 4.801315,
+            "solarMasses": 0.886719,
+            "solarRadius": 0.985504115025162,
+            "surfaceTemperature": 5859.0,
+            "rotationalPeriod": 1.88258148873843,
+            "rotationalPeriodTidallyLocked": false,
+            "axialTilt": -3.032756,
+            "parents": [
+                {
+                    "Null": 0
+                }
+            ],
+            "orbitalPeriod": 646.267513985984,
+            "semiMajorAxis": 6.45178982040618,
+            "orbitalEccentricity": 0.000355,
+            "orbitalInclination": -0.116159,
+            "argOfPeriapsis": 278.898586,
+            "meanAnomaly": 187.871391,
+            "ascendingNode": -30.41778,
+            "timestamps": {
+                "distanceToArrival": "2023-03-29T17:19:13",
+                "meanAnomaly": "2023-03-29T17:19:13"
+            },
+            "stations": [],
+            "updateTime": "2023-03-29 17:19:13+00"
+        },
+        {
+            "id64": 720575940379967679,
+            "bodyId": 20,
+            "name": "Cygni X-3 ABC 11 a",
+            "type": "Star",
+            "subType": "T Tauri Star",
+            "distanceToArrival": 3233.676202,
+            "mainStar": false,
+            "age": 2,
+            "spectralClass": "TTS3",
+            "luminosity": "VI",
+            "absoluteMagnitude": 21.1091,
+            "solarMasses": 0.023438,
+            "solarRadius": 0.102264396836808,
+            "surfaceTemperature": 426.0,
+            "rotationalPeriod": 0.711932397789352,
+            "rotationalPeriodTidallyLocked": false,
+            "axialTilt": 0.135876,
+            "parents": [
+                {
+                    "Star": 19
+                },
+                {
+                    "Null": 0
+                }
+            ],
+            "orbitalPeriod": 33.7860291754745,
+            "semiMajorAxis": 0.199141661783816,
+            "orbitalEccentricity": 0.0,
+            "orbitalInclination": 63.08498,
+            "argOfPeriapsis": 112.982937,
+            "meanAnomaly": 300.339878,
+            "ascendingNode": 100.88799,
+            "timestamps": {
+                "distanceToArrival": "2023-03-29T17:19:13",
+                "meanAnomaly": "2023-03-29T17:19:13"
+            },
+            "stations": [],
+            "updateTime": "2023-03-29 17:19:13+00"
+        },
+        {
+            "id64": 792633534417895615,
+            "bodyId": 22,
+            "name": "Cygni X-3 barycentre 22",
+            "type": "Barycentre",
+            "orbitalPeriod": 1154.07136855302,
+            "semiMajorAxis": 9.49643123911179,
+            "orbitalEccentricity": 0.00285,
+            "orbitalInclination": 0.014969,
+            "argOfPeriapsis": 182.503204,
+            "meanAnomaly": 29.573764,
+            "ascendingNode": 51.206318,
+            "timestamps": {
+                "meanAnomaly": "2023-03-12T14:48:50"
+            },
+            "stations": [],
+            "updateTime": "2023-03-12 14:48:50+00"
+        },
+        {
+            "id64": 828662331436859583,
+            "bodyId": 23,
+            "name": "Cygni X-3 ABC 12",
+            "type": "Star",
+            "subType": "T Tauri Star",
+            "distanceToArrival": 4693.96081,
+            "mainStar": false,
+            "age": 2,
+            "spectralClass": "TTS9",
+            "luminosity": "Va",
+            "absoluteMagnitude": 6.894836,
+            "solarMasses": 0.738281,
+            "solarRadius": 0.874145403306973,
+            "surfaceTemperature": 3842.0,
+            "rotationalPeriod": 1.60964989872685,
+            "rotationalPeriodTidallyLocked": false,
+            "axialTilt": 1.836407,
+            "parents": [
+                {
+                    "Null": 22
+                },
+                {
+                    "Null": 0
+                }
+            ],
+            "orbitalPeriod": 128.938430161389,
+            "semiMajorAxis": 0.0000618707015122308,
+            "orbitalEccentricity": 0.050945,
+            "orbitalInclination": 2.399824,
+            "argOfPeriapsis": 177.459547,
+            "meanAnomaly": 143.941291,
+            "ascendingNode": 87.580838,
+            "timestamps": {
+                "distanceToArrival": "2023-03-29T17:19:13",
+                "meanAnomaly": "2023-03-29T17:19:13"
+            },
+            "stations": [],
+            "updateTime": "2023-03-29 17:19:13+00"
+        },
+        {
+            "id64": 864691128455823551,
+            "bodyId": 24,
+            "name": "Cygni X-3 ABC 13",
+            "type": "Planet",
+            "subType": "High metal content world",
+            "distanceToArrival": 4904.586474,
+            "isLandable": false,
+            "gravity": 6.10823473029469,
+            "earthMasses": 34.024918,
+            "radius": 15046.216,
+            "surfaceTemperature": 7153.859863,
+            "surfacePressure": 27805705.2773945,
+            "volcanismType": "Major Silicate Vapour Geysers",
+            "atmosphereType": "Hot thick Silicate vapour",
+            "atmosphereComposition": {
+                "Iron": 1.475874,
+                "Silicates": 98.504272
+            },
+            "solidComposition": {
+                "Ice": 0.0,
+                "Metal": 33.2595,
+                "Rock": 66.7405
+            },
+            "terraformingState": "Not terraformable",
+            "rotationalPeriod": 1.67601323405093,
+            "rotationalPeriodTidallyLocked": false,
+            "axialTilt": -0.299579,
+            "parents": [
+                {
+                    "Null": 22
+                },
+                {
+                    "Null": 0
+                }
+            ],
+            "orbitalPeriod": 128.938430161389,
+            "semiMajorAxis": 0.453611660409531,
+            "orbitalEccentricity": 0.050945,
+            "orbitalInclination": 2.399824,
+            "argOfPeriapsis": 357.459542,
+            "meanAnomaly": 143.941459,
+            "ascendingNode": 87.580838,
+            "timestamps": {
+                "distanceToArrival": "2023-03-29T17:19:18",
+                "meanAnomaly": "2023-03-29T17:19:18"
+            },
+            "stations": [],
+            "updateTime": "2023-03-29 17:19:18+00"
+        }
+    ],
+    "stations": []
+}

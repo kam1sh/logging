@@ -1,0 +1,36 @@
+services:
+  feeder:
+    build: apps/feeder
+    environment:
+      FEEDER_DATASET: /galaxy.json.gz
+      FEEDER_LIMIT: "10392834"
+      PERSIST_URL: http://storage:8000
+    volumes:
+      - ./galaxy.json.gz:/galaxy.json.gz:ro
+      - ./logs:/logs
+
+  statistics:
+    build: apps/statistics
+    volumes:
+      - ./logs:/logs
+
+  storage:
+    build: apps/storage
+    environment:
+      STORAGE_KAFKA_SERVERS: "kafka:9092"
+    volumes:
+      - ./logs:/logs
+
+  kafka:
+    image: docker.io/bitnami/kafka:3.5
+    # uncomment for debugging
+    # ports:
+    #   - "9092:9092"
+    environment:
+      - ALLOW_PLAINTEXT_LISTENER=yes
+      - KAFKA_CFG_NODE_ID=0
+      - KAFKA_CFG_PROCESS_ROLES=controller,broker
+      - KAFKA_CFG_LISTENERS=PLAINTEXT://:9092,CONTROLLER://:9093
+      - KAFKA_CFG_LISTENER_SECURITY_PROTOCOL_MAP=CONTROLLER:PLAINTEXT,PLAINTEXT:PLAINTEXT
+      - KAFKA_CFG_CONTROLLER_QUORUM_VOTERS=0@kafka:9093
+      - KAFKA_CFG_CONTROLLER_LISTENER_NAMES=CONTROLLER

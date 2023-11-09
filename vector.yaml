@@ -1,0 +1,20 @@
+sources:
+  apps:
+    type: file
+    include:
+      - /home/igov/projects/logging/logs/feeder.log
+      - /home/igov/projects/logging/logs/statistics.log
+      - /home/igov/projects/logging/logs/storage.log
+    data_dir: /home/igov/.vector/checkpoints
+sinks:
+  out:
+    inputs:
+      - "apps"
+    type: "loki"
+    endpoint: http://localhost:3100
+    encoding:
+      codec: json
+    labels:
+      job: vector
+      host: "{{ host }}"
+      file: "{{ file }}"

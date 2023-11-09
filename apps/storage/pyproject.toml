@@ -1,0 +1,18 @@
+[tool.poetry]
+name = "storage"
+version = "0.1.0"
+description = ""
+authors = ["Igor Ovsiannikov <kamish@outlook.com>"]
+readme = "README.md"
+packages = [{include = "storage"}]
+
+[tool.poetry.dependencies]
+python = "^3.11"
+flask = "^2.3.2"
+attrs = "^23.1.0"
+kafka-python = "^2.0.2"
+
+
+[build-system]
+requires = ["poetry-core"]
+build-backend = "poetry.core.masonry.api"

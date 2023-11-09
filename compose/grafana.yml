@@ -1,0 +1,13 @@
+services:
+  grafana:
+    image: docker.io/grafana/grafana-enterprise:10.2.0-ubuntu
+    ports:
+    - "3000:3000"
+    environment:
+      - GF_AUTH_ANONYMOUS_ENABLED=true
+      - GF_AUTH_ANONYMOUS_ORG_ROLE=Admin
+
+  loki:
+    image: docker.io/grafana/loki:2.8.6
+    ports:
+      - "3100:3100"
