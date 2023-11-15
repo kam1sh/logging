@@ -8,6 +8,16 @@ import io.ktor.server.plugins.contentnegotiation.*
 import io.ktor.server.request.*
 import io.ktor.server.response.*
 import io.ktor.server.routing.*
+import io.opentelemetry.api.OpenTelemetry
+import io.opentelemetry.api.trace.propagation.W3CTraceContextPropagator
+import io.opentelemetry.context.propagation.ContextPropagators
+import io.opentelemetry.exporter.otlp.http.trace.OtlpHttpSpanExporter
+import io.opentelemetry.instrumentation.ktor.v2_0.server.KtorServerTracing
+import io.opentelemetry.sdk.OpenTelemetrySdk
+import io.opentelemetry.sdk.resources.Resource
+import io.opentelemetry.sdk.trace.SdkTracerProvider
+import io.opentelemetry.sdk.trace.export.BatchSpanProcessor
+import io.opentelemetry.semconv.ResourceAttributes
 import kotlinx.serialization.ExperimentalSerializationApi
 import kotlinx.serialization.Serializable
 import kotlinx.serialization.json.Json
@@ -106,6 +116,12 @@ fun Application.module(testing: Boolean = false) {
         })
     }
 
+    val otelSdk = otel()
+
+    install(KtorServerTracing) {
+        setOpenTelemetry(otelSdk)
+    }
+
     val log = LoggerFactory.getLogger("com.github.kam1sh.statistics")
     log.info("Starting...")
 
@@ -116,4 +132,23 @@ fun Application.module(testing: Boolean = false) {
             call.respond(info)
         }
     }
+}
+
+fun otel(): OpenTelemetry {
+    val resource = Resource.getDefault().toBuilder()
+        .put(ResourceAttributes.SERVICE_NAME, "statistics")
+        .put(ResourceAttributes.SERVICE_VERSION, "0.1.0")
+        .build()
+    val provider = SdkTracerProvider.builder()
+        .addSpanProcessor(BatchSpanProcessor.builder(
+            OtlpHttpSpanExporter.builder()
+                .setEndpoint("http://tempo:4318/v1/traces")
+                .build()
+        ).build())
+        .addResource(resource)
+        .build()
+    return OpenTelemetrySdk.builder()
+        .setTracerProvider(provider)
+        .setPropagators(ContextPropagators.create(W3CTraceContextPropagator.getInstance()))
+        .buildAndRegisterGlobal()
 }

@@ -3,15 +3,28 @@ package main
 import (
 	"bytes"
 	"compress/gzip"
+	"context"
 	"encoding/json"
 	"fmt"
+	"golang.org/x/time/rate"
 	"io"
 	"log"
 	"net/http"
 	"os"
+	"os/signal"
 	"strconv"
 	"sync"
 	"time"
+
+	"go.opentelemetry.io/contrib/instrumentation/net/http/otelhttp"
+	"go.opentelemetry.io/otel"
+	"go.opentelemetry.io/otel/attribute"
+	"go.opentelemetry.io/otel/exporters/otlp/otlptrace/otlptracehttp"
+	"go.opentelemetry.io/otel/propagation"
+	"go.opentelemetry.io/otel/sdk/resource"
+	sdktrace "go.opentelemetry.io/otel/sdk/trace"
+	semconv "go.opentelemetry.io/otel/semconv/v1.21.0"
+	"go.opentelemetry.io/otel/trace"
 )
 
 var group sync.WaitGroup
@@ -19,55 +32,99 @@ var group sync.WaitGroup
 var statsHost string
 var persistHost string
 
-func Worker(stream <-chan json.RawMessage, errs chan<- error) {
-	t := http.Transport(*http.DefaultTransport.(*http.Transport))
-	t.MaxIdleConnsPerHost = 100
+var tracer trace.Tracer
+
+func Worker(ctx context.Context, stream <-chan json.RawMessage) {
 	c := &http.Client{
-		Transport: &t,
+		Transport: otelhttp.NewTransport(http.DefaultTransport),
 		Timeout:   time.Duration(30) * time.Second,
 	}
 	defer group.Done()
 	for record := range stream {
-		resp, err := c.Post(statsHost, "application/json", bytes.NewReader(record))
-		if err != nil {
-			errs <- fmt.Errorf("error requesting service 1: %w", err)
-			continue
+		ctx, span := tracer.Start(ctx, "record")
+		hosts := map[string]string{
+			"statistics": statsHost,
+			"storage":    persistHost,
 		}
-		readed, err := io.Copy(io.Discard, resp.Body)
-		if err != nil {
-			errs <- fmt.Errorf("error reading body: %w", err)
+		for name, url := range hosts {
+			ctx, hostSpan := tracer.Start(ctx, "request", trace.WithAttributes(
+				attribute.String("service", name),
+			))
+			req, err := http.NewRequestWithContext(ctx, http.MethodPost, url, bytes.NewReader(record))
+			if err != nil {
+				hostSpan.End()
+				continue
+			}
+			req.Header.Add("content-type", "application/json")
+			resp, err := c.Do(req)
+			if err != nil {
+				hostSpan.End()
+				continue
+			}
+			readed, _ := io.Copy(io.Discard, resp.Body)
+			span.SetAttributes(attribute.Int64("response.size", readed))
+			resp.Body.Close()
+			span.SetAttributes(attribute.Int("response.code", resp.StatusCode))
+			hostSpan.End()
 		}
-		log.Println("response from service 1 has", readed, "bytes")
-		resp.Body.Close()
-		if resp.StatusCode != http.StatusOK {
-			errs <- fmt.Errorf("non-ok response from service 1 (code %v)", resp.StatusCode)
-			continue
-		}
-		resp, err = http.Post(persistHost, "application/json", resp.Body)
-		if err != nil {
-			errs <- fmt.Errorf("error requesting service 2: %w", err)
-			continue
-		}
-		readed, err = io.Copy(io.Discard, resp.Body)
-		if err != nil {
-			errs <- fmt.Errorf("error reading body: %w", err)
-		}
-		log.Println("response from service 1 has", readed, "bytes")
-		resp.Body.Close()
-		if resp.StatusCode != http.StatusOK {
-			errs <- fmt.Errorf("non-ok response from service 2 (code %v)", resp.StatusCode)
-		}
+		span.End()
 	}
 }
 
-func main() {
-	logFile, err := os.OpenFile("logs/feeder.log", os.O_CREATE|os.O_RDWR, 0666)
+func initProvider() (func(context.Context) error, error) {
+	ctx := context.Background()
+
+	res, err := resource.New(ctx,
+		resource.WithAttributes(
+			semconv.ServiceName("feeder"),
+		),
+	)
 	if err != nil {
-		fmt.Println(err)
-		os.Exit(1)
+		return nil, fmt.Errorf("failed to create resource: %w", err)
 	}
-	defer logFile.Close()
-	log.SetOutput(logFile)
+
+	ctx, cancel := context.WithTimeout(ctx, time.Second)
+	defer cancel()
+	traceExporter, err := otlptracehttp.New(ctx,
+		otlptracehttp.WithEndpoint("tempo:4318"),
+		otlptracehttp.WithInsecure(),
+	)
+	if err != nil {
+		return nil, fmt.Errorf("failed to create trace exporter: %w", err)
+	}
+
+	// Register the trace exporter with a TracerProvider, using a batch
+	// span processor to aggregate spans before export.
+	bsp := sdktrace.NewBatchSpanProcessor(traceExporter)
+	tracerProvider := sdktrace.NewTracerProvider(
+		sdktrace.WithSampler(sdktrace.AlwaysSample()),
+		sdktrace.WithResource(res),
+		sdktrace.WithSpanProcessor(bsp),
+	)
+	otel.SetTracerProvider(tracerProvider)
+
+	// set global propagator to tracecontext (the default is no-op).
+	otel.SetTextMapPropagator(propagation.TraceContext{})
+
+	// Shutdown will flush any remaining spans and shut down the exporter.
+	return tracerProvider.Shutdown, nil
+}
+
+func main() {
+	ctx, cancel := signal.NotifyContext(context.Background(), os.Interrupt)
+	defer cancel()
+	shutdown, err := initProvider()
+	if err != nil {
+		log.Fatalln(err)
+	}
+	defer func() {
+		if err := shutdown(ctx); err != nil {
+			log.Fatal("failed to shutdown TracerProvider: %w", err)
+		}
+	}()
+
+	tracer = otel.Tracer("feeder/main")
+
 	statsHost = os.Getenv("STATS_URL")
 	if statsHost == "" {
 		statsHost = "http://statistics:8080"
@@ -76,6 +133,7 @@ func main() {
 	if persistHost == "" {
 		persistHost = "http://persister:8080"
 	}
+	http.DefaultTransport.(*http.Transport).MaxIdleConnsPerHost = 110
 	file, err := os.Open(os.Getenv("FEEDER_DATASET"))
 	if err != nil {
 		log.Fatalln(err)
@@ -84,20 +142,14 @@ func main() {
 	if err != nil {
 		log.Fatalln(err)
 	}
-	workersCount := 32
+	workersCount := 4
+	limiter := rate.Sometimes{First: 100 * workersCount, Interval: time.Second}
 	stream := make(chan json.RawMessage, workersCount)
 	defer close(stream)
-	errStream := make(chan error, workersCount)
-	defer close(errStream)
-	go func() {
-		for v := range errStream {
-			log.Println(v)
-		}
-	}()
 	for i := 0; i < workersCount; i++ {
 		log.Println("dispatching worker", i)
 		group.Add(1)
-		go Worker(stream, errStream)
+		go Worker(ctx, stream)
 	}
 	limit := os.Getenv("FEEDER_LIMIT")
 	if limit == "" {
@@ -117,7 +169,9 @@ func main() {
 		if err != nil {
 			log.Fatalln(err)
 		}
-		stream <- record
+		limiter.Do(func() {
+			stream <- record
+		})
 	}
 	group.Wait()
 }

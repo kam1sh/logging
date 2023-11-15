@@ -1,10 +1,25 @@
 import os
 import json
-import logging
 
 from flask import Flask, request
 from attrs import asdict, define
 from kafka import KafkaProducer
+
+from opentelemetry import trace
+from opentelemetry.sdk.trace import TracerProvider
+from opentelemetry.sdk.resources import SERVICE_NAME, Resource
+from opentelemetry.sdk.trace.export import BatchSpanProcessor
+from opentelemetry.instrumentation.flask import FlaskInstrumentor
+from opentelemetry.exporter.otlp.proto.http.trace_exporter import OTLPSpanExporter
+
+resource = Resource(attributes={
+    SERVICE_NAME: "storage"
+})
+provider = TracerProvider(resource=resource)
+exporter = OTLPSpanExporter("http://tempo:4318/v1/traces")
+processor = BatchSpanProcessor(exporter)
+provider.add_span_processor(processor)
+trace.set_tracer_provider(provider)
 
 @define
 class Station:
@@ -52,9 +67,8 @@ class SystemInformation:
 
 producer = KafkaProducer(bootstrap_servers=os.environ["STORAGE_KAFKA_SERVERS"])
 
-app = Flask(__name__)
-app.logger.propagate = False
-app.logger.handlers = [logging.FileHandler(filename="/logs/storage.log", mode="w")]
+app = Flask("storage")
+FlaskInstrumentor().instrument_app(app, tracer_provider=provider)
 
 @app.route("/", methods=["POST"])
 def store():
