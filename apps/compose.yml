@@ -1,25 +1,27 @@
 services:
   feeder:
-    build: apps/feeder
+    build: feeder
+    stdin_open: true
+    tty: true
     environment:
       FEEDER_DATASET: /galaxy.json.gz
-      FEEDER_LIMIT: "10392834"
+      FEEDER_LIMIT: "5196417" # 5% of all records (103928340)
       PERSIST_URL: http://storage:8000
     volumes:
-      - ./galaxy.json.gz:/galaxy.json.gz:ro
-      - ./logs:/logs
+      - ../galaxy.json.gz:/galaxy.json.gz:ro
+      - ../logs:/logs
 
   statistics:
-    build: apps/statistics
+    build: statistics
     volumes:
-      - ./logs:/logs
+      - ../logs:/logs
 
   storage:
-    build: apps/storage
+    build: storage
     environment:
       STORAGE_KAFKA_SERVERS: "kafka:9092"
     volumes:
-      - ./logs:/logs
+      - ../logs:/logs
 
   kafka:
     image: docker.io/bitnami/kafka:3.5
@@ -34,3 +36,9 @@ services:
       - KAFKA_CFG_LISTENER_SECURITY_PROTOCOL_MAP=CONTROLLER:PLAINTEXT,PLAINTEXT:PLAINTEXT
       - KAFKA_CFG_CONTROLLER_QUORUM_VOTERS=0@kafka:9093
       - KAFKA_CFG_CONTROLLER_LISTENER_NAMES=CONTROLLER
+      - KAFKA_CFG_AUTO_CREATE_TOPICS_ENABLE=true
+
+networks:
+  default:
+    name: apps
+    external: false

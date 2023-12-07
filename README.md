@@ -42,6 +42,7 @@ systemctl --user start podman.socket
 export DOCKER_HOST=unix:///run/user/1000/podman/podman.sock
 
 export COMPOSE_PROJECT_NAME=apps
+docker-compose --project-directory $PWD -f compose/apps.yml build
 # Launch kafka
 docker-compose --project-directory $PWD -f compose/apps.yml up -d kafka
 # After a while, launch apps that will produce a bunch of logs
@@ -50,13 +51,6 @@ docker-compose --project-directory $PWD -f compose/apps.yml up -d statistics
 docker-compose --project-directory $PWD -f compose/apps.yml up -d feeder
 ```
 
-# Fluent-bit + Elasticsearch
-
-```bash
-export COMPOSE_PROJECT_NAME=es
-docker-compose --project-directory $PWD -f compose/elastic.yml up -d
-podman run --network=host -it --rm -v elastic_certs:/ca -v $PWD/logs/:/logs -v $PWD/fluent-bit.conf:/fluent-bit.conf cr.fluentbit.io/fluent/fluent-bit:latest -c /fluent-bit.conf
-```
 
 # Vector + Grafana Loki
 ```bash

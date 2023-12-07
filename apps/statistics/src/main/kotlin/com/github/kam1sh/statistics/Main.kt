@@ -23,7 +23,6 @@ data class System(
     val id64: Long,
     val name: String,
     val coords: Coords,
-    val bodyCount: Int = 0,
     val date: String,
     @JsonNames("bodies")
     private val _bodies: List<Body>
@@ -37,7 +36,7 @@ data class System(
 fun System.process(): SystemInformation {
     log.info("Processing system {}", name)
     val stats = bodies.process()
-    return stats.copy()
+    return stats
 }
 
 @Serializable

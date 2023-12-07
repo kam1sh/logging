@@ -1,6 +1,7 @@
 import os
 import json
 import logging
+import collections
 
 from flask import Flask, request
 from attrs import asdict, define
@@ -27,11 +28,14 @@ class PlanetStats:
     has_terraformable: bool
 
     @classmethod
-    def from_dict(cls, d):
+    def from_dict(cls, items):
+        by_type = collections.defaultdict(lambda: 0)
+        for x in items:
+            by_type[x["subType"]] += 1
         return cls(
-            total=d["total"],
-            by_type=d["byType"],
-            has_terraformable=d["hasTerraformable"]
+            total=len(items),
+            by_type=by_type,
+            has_terraformable=any(x["terraformingState"] != "Not terraformable" for x in items)
         )
 
 @define
@@ -42,7 +46,8 @@ class SystemInformation:
 
     @classmethod
     def from_dict(cls, d):
-        planets = PlanetStats.from_dict(d["planets"])
+        planets = filter(lambda x: x["type"] == "Planet", d["bodies"])
+        planets = PlanetStats.from_dict(list(planets))
         stations = [Station.from_dict(x) for x in d["stations"]]
         return cls(
             name=d["name"],
