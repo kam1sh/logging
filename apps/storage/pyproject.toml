@@ -11,6 +11,7 @@ python = "^3.11"
 flask = "^2.3.2"
 attrs = "^23.1.0"
 kafka-python = "^2.0.2"
+loguru = "^0.7.2"
 
 
 [build-system]

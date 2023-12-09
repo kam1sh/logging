@@ -24,7 +24,6 @@ def client():
     return Search(using=client, index=idx)
 
 @pytest.mark.fluentbit
-@pytest.mark.elastic
 @pytest.mark.asyncio
 async def test_fluentbit():
     fluentbit = ContainerRunner.fluentbit(
@@ -39,17 +38,27 @@ async def test_fluentbit():
     esprof = ContainerProfiler("es-es01-1")
     fbprof = fluentbit.profiler()
     tasks = [fbprof.dispatch_task(), esprof.dispatch_task()]
-    # wait for fluent-bit to finish
-    try:
-        await fluentbit.wait()
-    finally:
-        await fluentbit.kill()
-        fbprof.stop()
-        esprof.stop()
-        await asyncio.wait(tasks)
+    def report():
+        nonlocal esprof, fbprof
         print("total:")
         print("Elasticsearch:", esprof.report())
         print("Fluent-bit:   ", fbprof.report())
+
+    # wait for fluent-bit to finish
+    try:
+        await fluentbit.wait()
+    except RuntimeError:
+        report()
+        raise
+    finally:
+        try:
+            report()
+            await fluentbit.kill()
+            fbprof.stop()
+            esprof.stop()
+            await asyncio.wait(tasks)
+        except:
+            pass
 
 @pytest.mark.parametrize("pagecache", [True, False], ids=["with pagecache", "without cache"])
 def test_simple_query(benchmark, pagecache, client):

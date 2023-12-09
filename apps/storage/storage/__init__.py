@@ -1,3 +1,4 @@
+from logging import LogRecord
 import os
 import json
 import logging
@@ -6,6 +7,7 @@ import collections
 from flask import Flask, request
 from attrs import asdict, define
 from kafka import KafkaProducer
+from loguru import logger
 
 @define
 class Station:
@@ -57,9 +59,16 @@ class SystemInformation:
 
 producer = KafkaProducer(bootstrap_servers=os.environ["STORAGE_KAFKA_SERVERS"])
 
+
+class LoguruHandler(logging.Handler):
+    def emit(self, record: LogRecord) -> None:
+        logger_opt = logger.opt(depth=6, exception=record.exc_info)
+        logger_opt.log(record.levelno, record.getMessage())
+
 app = Flask(__name__)
-app.logger.propagate = False
-app.logger.handlers = [logging.FileHandler(filename="/logs/storage.log", mode="w")]
+logging.root.handlers = [LoguruHandler()]
+logger.remove(0)
+logger.add("/logs/storage.json", format="{message}", serialize=True)
 
 @app.route("/", methods=["POST"])
 def store():

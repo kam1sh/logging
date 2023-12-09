@@ -10,45 +10,35 @@ pipeline:
   inputs:
   - name: tail
     tag: app.feeder
-    path: /logs/feeder.log
+    path: /logs/feeder.json
     read_from_head: yes
     mem_buf_limit: 64M
+    parser: feeder
     processors:
       logs:
       - name: modify
         add: service feeder
   - name: tail
     tag: app.statistics
-    path: /logs/statistics.log
+    path: /logs/statistics.json
     read_from_head: yes
     mem_buf_limit: 64M
     exit_on_eof: yes
+    parser: statistics
     processors:
       logs:
       - name: modify
         add: service statistics
   - name: tail
     tag: app.storage
-    path: /logs/storage-uwsgi.log
+    path: /logs/storage.json
     read_from_head: yes
     mem_buf_limit: 64M
+    parser: storage
     processors:
       logs:
       - name: modify
         add: service storage
-  # filters:
-  # - name: multiline
-  #   match: app.feeder
-  #   multiline.key_content: log
-  #   multiline.parser: go
-  # - name: multiline
-  #   match: app.statistics
-  #   multiline.key_content: log
-  #   multiline.parser: logback
-  # - name: multiline
-  #   match: app.storage
-  #   multiline.key_content: log
-  #   multiline.parser: python
   outputs:
   - name: es
     match: app.*

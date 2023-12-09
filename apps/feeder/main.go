@@ -6,13 +6,14 @@ import (
 	"encoding/json"
 	"fmt"
 	"io"
-	"log"
 	"net/http"
 	"os"
 	"strconv"
 	"sync"
 	"time"
 
+	"github.com/rs/zerolog"
+	"github.com/rs/zerolog/log"
 	"github.com/schollz/progressbar/v3"
 )
 
@@ -21,7 +22,7 @@ var group sync.WaitGroup
 var statsHost string
 var persistHost string
 
-func Worker(stream <-chan json.RawMessage, errs chan<- error) {
+func Worker(stream <-chan json.RawMessage) {
 	c := &http.Client{
 		Transport: &http.Transport{
 			MaxIdleConnsPerHost: 100,
@@ -37,17 +38,29 @@ func Worker(stream <-chan json.RawMessage, errs chan<- error) {
 		for name, addr := range svcs {
 			resp, err := c.Post(addr, "application/json", bytes.NewReader(record))
 			if err != nil {
-				errs <- fmt.Errorf("error requesting service %s: %w", name, err)
+				log.Error().
+					AnErr("error", err).
+					Str("destination", name).
+					Msg("error requesting service")
 				continue
 			}
 			readed, err := io.Copy(io.Discard, resp.Body)
 			if err != nil {
-				errs <- fmt.Errorf("error reading body: %w", err)
+				log.Error().
+					AnErr("error", err).
+					Str("destination", name).
+					Msg("error reading body")
 			}
-			log.Println("response from service", name, "has", readed, "bytes")
+			log.Info().
+				Str("destination", name).
+				Int64("bytes", readed).
+				Msg("response readed")
 			resp.Body.Close()
 			if resp.StatusCode != http.StatusOK {
-				errs <- fmt.Errorf("non-ok response from service %s (code %v)", name, resp.StatusCode)
+				log.Error().
+					Str("destination", name).
+					Int("code", resp.StatusCode).
+					Msg("non-ok response from service")
 				continue
 			}
 		}
@@ -55,13 +68,14 @@ func Worker(stream <-chan json.RawMessage, errs chan<- error) {
 }
 
 func main() {
-	logFile, err := os.OpenFile("logs/feeder.log", os.O_CREATE|os.O_RDWR, 0666)
+	logFile, err := os.OpenFile("logs/feeder.json", os.O_CREATE|os.O_RDWR, 0666)
 	if err != nil {
 		fmt.Println(err)
 		os.Exit(1)
 	}
 	defer logFile.Close()
-	log.SetOutput(logFile)
+	zerolog.TimeFieldFormat = zerolog.TimeFormatUnixMs
+	log.Logger = log.Output(logFile)
 	statsHost = os.Getenv("STATS_URL")
 	if statsHost == "" {
 		statsHost = "http://statistics:8080"
@@ -76,42 +90,47 @@ func main() {
 	}
 	limitNum, err := strconv.ParseInt(limit, 10, 32)
 	if err != nil {
-		log.Fatalln(err)
+		log.Fatal().
+			AnErr("error", err).
+			Msg("error parsing row limit")
 	}
 	bar := progressbar.Default(limitNum)
 	file, err := os.Open(os.Getenv("FEEDER_DATASET"))
 	if err != nil {
-		log.Fatalln(err)
+		log.Fatal().
+			AnErr("error", err).
+			Msg("error while opening dataset")
 	}
 	reader, err := gzip.NewReader(file)
 	if err != nil {
-		log.Fatalln(err)
+		log.Fatal().
+			AnErr("error", err).
+			Msg("error reading dataset gzip header")
 	}
 	workersCount := 2
 	stream := make(chan json.RawMessage, workersCount)
-	defer close(stream)
-	errStream := make(chan error, workersCount)
-	defer close(errStream)
-	go func() {
-		for v := range errStream {
-			log.Println(v)
-		}
-	}()
 	for i := 0; i < workersCount; i++ {
-		log.Println("dispatching worker", i)
+		log.Info().
+			Int("worker", i).
+			Msg("dispatching worker")
 		group.Add(1)
-		go Worker(stream, errStream)
+		go Worker(stream)
 	}
 	decoder := json.NewDecoder(reader)
 	if _, err := decoder.Token(); err != nil {
-		log.Fatalln(err)
+		log.Fatal().
+			AnErr("error", err).
+			Msg("error parsing first json token")
 	}
 	for i := 0; i < int(limitNum); i++ {
 		bar.Add(1)
 		var record json.RawMessage
 		err = decoder.Decode(&record)
 		if err != nil {
-			log.Fatalln(err)
+			log.Error().
+				AnErr("error", err).
+				Msg("error parsing json")
+			continue
 		}
 		stream <- record
 	}
