@@ -39,6 +39,20 @@ pipeline:
       logs:
       - name: modify
         add: service storage
+      - name: modify
+        add: log_type app
+  - name: tail
+    tag: app.storage_access
+    path: /logs/storage-access.json
+    read_from_head: yes
+    mem_buf_limit: 64M
+    parser: storage_access
+    processors:
+      logs:
+      - name: modify
+        add: service storage
+      - name: modify
+        add: log_type access
   outputs:
   - name: es
     match: app.*
@@ -50,8 +64,5 @@ pipeline:
     http_passwd: changeme
     logstash_format: yes
     buffer_size: 16M
-    # pipeline: 
     tls: on
     tls.ca_file: /ca/ca/ca.crt
-
-

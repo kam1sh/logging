@@ -7,6 +7,7 @@ import random
 
 from o11y_tests.container import ContainerProfiler, ContainerRunner, volume_path
 from o11y_tests.vector import Vector
+from o11y_tests.fluentbit import Fluentbit
 from elasticsearch import Elasticsearch
 from elasticsearch_dsl import Search, A
 
@@ -31,15 +32,15 @@ def esprof():
 @pytest.mark.fluentbit
 @pytest.mark.asyncio
 async def test_fluentbit(esprof):
-    fluentbit = ContainerRunner.fluentbit(
+    fluentbit = Fluentbit(
         network="elastic",
         config_name="elastic.yaml",
         extra_vols={"es_certs": "/ca"}
     )
     # start fluent-bit
-    fluentbit.start()
+    fluentbit.container.start()
     print("fluentbit started")
-    fbprof = fluentbit.profiler()
+    fbprof = fluentbit.container.profiler()
     tasks = [fbprof.dispatch_task(), esprof.dispatch_task()]
     def report():
         nonlocal esprof, fbprof
@@ -48,14 +49,14 @@ async def test_fluentbit(esprof):
         print("Fluent-bit:   ", fbprof.report())
     # wait for fluent-bit to finish
     try:
-        await fluentbit.wait()
+        await fluentbit.container.wait()
     except RuntimeError:
         report()
         raise
     finally:
         try:
             report()
-            await fluentbit.kill()
+            await fluentbit.container.kill()
             fbprof.stop()
             esprof.stop()
             await asyncio.wait(tasks)

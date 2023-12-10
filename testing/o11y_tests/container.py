@@ -145,27 +145,6 @@ class ContainerRunner:
             cmdline.extend(cmd)
         return cmdline
 
-    @classmethod
-    def fluentbit(cls, network, config_name, extra_vols=None, memlimit="2g", rm=True):
-        project_root = Path().resolve().parents[0]
-        pth = project_root / "logging" / "fluent-bit"
-        volumes = {
-            str(project_root / "logs"): "/logs",
-            str(pth / "parser.conf"): "/parser.conf",
-            str(pth / config_name): "/fluent-bit.yaml",
-        }
-        if extra_vols:
-            volumes = dict(**volumes, **extra_vols)
-        return cls(
-            "fluentbit",
-            network,
-            "cr.fluentbit.io/fluent/fluent-bit:2.1.10",
-            volumes,
-            memory_limit=memlimit,
-            rm=rm,
-            extra=["-c", "/fluent-bit.yaml"],
-        )
-
     def start(self):
         self.cid = subprocess.check_output(self.cmdline, encoding="utf8")
         assert self.cid

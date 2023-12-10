@@ -4,7 +4,7 @@ from pathlib import Path
 from gql import gql, Client
 from gql.transport.websockets import WebsocketsTransport
 
-from o11y_tests.container import ContainerRunner, ContainerProfiler
+from o11y_tests.container import ContainerRunner
 
 class Vector:
     def __init__(self, network, config_name, extra_vols=None) -> None:

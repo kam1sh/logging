@@ -8,6 +8,7 @@ sinks:
       - feeder
       - statistics
       - storage
+      - storage_access
     type: "elasticsearch"
     endpoints:
       - "https://es01:9200"
@@ -27,34 +28,51 @@ sources:
     type: file
     read_from: beginning
     include:
-    - /logs/feeder.log
+    - /logs/feeder.json
+  storage_access_f:
+    type: file
+    read_from: beginning
+    include:
+    - /logs/storage-access.json
   storage_f:
     type: file
     read_from: beginning
     include:
-    - /logs/storage-uwsgi.log
+    - /logs/storage.json
   statistics_f:
     type: file
     read_from: beginning
     include:
-    - /logs/statistics.log
+    - /logs/statistics.json
 transforms:
   feeder:
     type: remap
     inputs:
     - feeder_f
     source: |
+      .message = parse_json!(.message)
       .service = "feeder"
   statistics:
     type: remap
     inputs:
     - statistics_f
     source: |
+      .message = parse_json!(.message)
       .service = "statistics"
   storage:
     type: remap
     inputs:
     - storage_f
     source: |
+      .message = parse_json!(.message)
       .service = "storage"
+      .log_type = "app"
+  storage_access:
+    type: remap
+    inputs:
+    - storage_access_f
+    source: |
+      .message = parse_json!(.message)
+      .service = "storage"
+      .log_type = "access"
 
