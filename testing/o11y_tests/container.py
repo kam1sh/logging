@@ -105,7 +105,8 @@ class ContainerRunner:
         volumes: dict[str, str],
         memory_limit=None,
         rm=False,
-        extra=None,
+        cmd=None,
+        args=None,
     ) -> None:
         self.name = name
         self.network = network
@@ -113,10 +114,10 @@ class ContainerRunner:
         self.volumes = volumes
         self.memlimit = memory_limit
         self.delete = rm
-        self.cmdline = self.build_cmdline(args=extra)
+        self.cmdline = self.build_cmdline(args=args, cmd=cmd)
         self.cid = None
 
-    def build_cmdline(self, args=None):
+    def build_cmdline(self, args=None, cmd=None):
         cmdline = [
             CONTAINER_EXEC,
             "run",
@@ -132,14 +133,16 @@ class ContainerRunner:
             cmdline.extend(["-m", self.memlimit])
         if self.delete:
             cmdline.append("--rm")
+        if args:
+            cmdline.extend(args)
         cmdline.extend(
             it
             for arr in [["-v", f"{k}:{v}"] for k, v in self.volumes.items()]
             for it in arr
         )
         cmdline.append(self.image)
-        if args:
-            cmdline.extend(args)
+        if cmd:
+            cmdline.extend(cmd)
         return cmdline
 
     @classmethod

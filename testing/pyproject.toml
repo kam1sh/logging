@@ -16,6 +16,7 @@ jc = "^1.23.6"
 elasticsearch = "^8.11.0"
 pytest-benchmark = "^4.0.0"
 elasticsearch-dsl = "^8.11.0"
+gql = {extras = ["all"], version = "^3.4.1"}
 
 
 [tool.poetry.group.dev.dependencies]

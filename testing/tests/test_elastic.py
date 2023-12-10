@@ -6,6 +6,7 @@ import pytest
 import random
 
 from o11y_tests.container import ContainerProfiler, ContainerRunner, volume_path
+from o11y_tests.vector import Vector
 from elasticsearch import Elasticsearch
 from elasticsearch_dsl import Search, A
 
@@ -23,10 +24,13 @@ def client():
     idx = list(resp.body.keys())[0]
     return Search(using=client, index=idx)
 
+@pytest.fixture
+def esprof():
+    return ContainerProfiler("es-es01-1")
+
 @pytest.mark.fluentbit
-@pytest.mark.elastic
 @pytest.mark.asyncio
-async def test_fluentbit():
+async def test_fluentbit(esprof):
     fluentbit = ContainerRunner.fluentbit(
         network="elastic",
         config_name="elastic.yaml",
@@ -35,8 +39,6 @@ async def test_fluentbit():
     # start fluent-bit
     fluentbit.start()
     print("fluentbit started")
-    # setup profiling
-    esprof = ContainerProfiler("es-es01-1")
     fbprof = fluentbit.profiler()
     tasks = [fbprof.dispatch_task(), esprof.dispatch_task()]
     # wait for fluent-bit to finish
@@ -50,6 +52,28 @@ async def test_fluentbit():
         print("total:")
         print("Elasticsearch:", esprof.report())
         print("Fluent-bit:   ", fbprof.report())
+
+@pytest.mark.vector
+@pytest.mark.asyncio
+async def test_vector(esprof):
+    vector = Vector(
+        "elastic",
+        config_name="elastic.yaml",
+        extra_vols={"es_certs": "/ca"}
+    )
+    vector.container.start()
+    print("vector started")
+    vprof = vector.profiler()
+    tasks = [vprof.dispatch_task(), esprof.dispatch_task()]
+    try:
+        await vector.wait(component="elastic")
+    finally:
+        vprof.stop()
+        esprof.stop()
+        await asyncio.wait(tasks)
+        print("total:")
+        print("Elasticsearch:", esprof.report())
+        print("Vector:       ", vprof.report())
 
 @pytest.mark.parametrize("pagecache", [True, False], ids=["with pagecache", "without cache"])
 def test_simple_query(benchmark, pagecache, client):

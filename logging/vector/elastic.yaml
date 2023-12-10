@@ -1,0 +1,60 @@
+api:
+  enabled: true
+  address: 0.0.0.0:8686
+
+sinks:
+  elastic:
+    inputs:
+      - feeder
+      - statistics
+      - storage
+    type: "elasticsearch"
+    endpoints:
+      - "https://es01:9200"
+    api_version: v8
+    auth:
+      strategy: basic
+      user: elastic
+      password: changeme
+    compression: gzip
+    bulk:
+      index: "vector-%Y-%m-%d"
+    tls:
+      ca_file: /ca/ca/ca.crt
+
+sources:
+  feeder_f:
+    type: file
+    read_from: beginning
+    include:
+    - /logs/feeder.log
+  storage_f:
+    type: file
+    read_from: beginning
+    include:
+    - /logs/storage-uwsgi.log
+  statistics_f:
+    type: file
+    read_from: beginning
+    include:
+    - /logs/statistics.log
+transforms:
+  feeder:
+    type: remap
+    inputs:
+    - feeder_f
+    source: |
+      .service = "feeder"
+  statistics:
+    type: remap
+    inputs:
+    - statistics_f
+    source: |
+      .service = "statistics"
+  storage:
+    type: remap
+    inputs:
+    - storage_f
+    source: |
+      .service = "storage"
+
