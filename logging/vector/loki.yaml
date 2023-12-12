@@ -3,15 +3,25 @@ api:
   address: 0.0.0.0:8686
 
 sinks:
-  devnull:
+  loki:
     inputs:
       - feeder
       - statistics
       - storage
-    type: file
-    path: /dev/null
+    type: loki
+    endpoint: "http://loki:3100"
+    compression: snappy
+    out_of_order_action: accept
     encoding:
       codec: json
+    labels:
+      job: vector
+      service: "{{ service }}"
+    acknowledgements:
+      enabled: true
+    buffer:
+      type: disk
+      max_size: 1073741952
 
 sources:
   feeder_f:
@@ -23,7 +33,7 @@ sources:
     type: file
     read_from: beginning
     include:
-    - /logs/stprage.log
+    - /logs/storage-uwsgi.log
   statistics_f:
     type: file
     read_from: beginning
@@ -48,4 +58,3 @@ transforms:
     - storage_f
     source: |
       .service = "storage"
-

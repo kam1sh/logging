@@ -1,0 +1,31 @@
+version: "3"
+
+networks:
+  loki:
+
+services:
+  grafana:
+    image: docker.io/grafana/grafana-enterprise:10.2.0-ubuntu
+    ports:
+    - "3000:3000"
+    environment:
+    - GF_AUTH_ANONYMOUS_ENABLED=true
+    - GF_AUTH_ANONYMOUS_ORG_ROLE=Admin
+    networks:
+    - loki
+
+  loki:
+    image: docker.io/grafana/loki:2.9.0
+    command: -config.file=/etc/loki/config.yaml
+    volumes:
+    - ./config.yaml:/etc/loki/config.yaml:ro
+    ports:
+    - "3100:3100"
+    networks:
+    - loki
+
+# volumes:
+#   lokidata:
+#     driver: local
+#   grafanadata:
+#     driver: local

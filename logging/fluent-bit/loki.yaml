@@ -1,0 +1,44 @@
+service:
+  log_level: warn
+  parsers_file: /parser.conf
+
+pipeline:
+  inputs:
+  - name: tail
+    tag: app.feeder
+    path: /logs/feeder.log
+    read_from_head: yes
+    mem_buf_limit: 64M
+    processors:
+      logs:
+      - name: modify
+        add: service feeder
+      - name: modify
+        add: log_type app
+  - name: tail
+    tag: app.statistics
+    path: /logs/statistics.log
+    read_from_head: yes
+    mem_buf_limit: 64M
+    exit_on_eof: yes
+    processors:
+      logs:
+      - name: modify
+        add: service statistics
+  - name: tail
+    tag: app.storage_access
+    path: /logs/storage-uwsgi.log
+    read_from_head: yes
+    mem_buf_limit: 64M
+    processors:
+      logs:
+      - name: modify
+        add: service storage
+      - name: modify
+        add: log_type access
+  outputs:
+  - name: loki
+    match: app.*
+    host: loki
+    compress: gzip
+    labels: job=fluentbit, $log_type, $service
